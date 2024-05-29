@@ -20,6 +20,28 @@ var SCanvas = /** @class */ (function (_super) {
     function SCanvas(props) {
         return _super.call(this, props) || this;
     }
+    SCanvas.prototype.componentDidMount = function () {
+        _super.prototype.componentDidMount.call(this);
+        this.canvas.addEventListener("click", this.onClick.bind(this));
+        this.canvas.addEventListener("mousedown", this.onMousedown.bind(this));
+        this.canvas.addEventListener("mousemove", this.onMousemove.bind(this));
+        this.canvas.addEventListener("mouseup", this.onMouseup.bind(this));
+    };
+    SCanvas.prototype.componentWillUnmount = function () {
+        this.canvas.removeEventListener("click", this.onClick);
+        this.canvas.removeEventListener("mousedown", this.onMousedown);
+        this.canvas.removeEventListener("mousemove", this.onMousemove);
+        this.canvas.removeEventListener("mouseup", this.onMouseup);
+    };
+    SCanvas.prototype.loadImage = function (uri) {
+        return new Promise(function (resolve, reject) {
+            var img1 = new Image();
+            img1.addEventListener('load', function () {
+                resolve(img1);
+            });
+            img1.src = uri;
+        });
+    };
     SCanvas.prototype.render = function () {
         var _this = this;
         return (React.createElement("canvas", { style: {
